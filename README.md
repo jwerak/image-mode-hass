@@ -62,17 +62,18 @@ sudo virt-install \
 Build ISO
 
 ```bash
-podman pull quay.io/fedora/fedora-bootc:latest
+podman build --no-cache -t quay.io/jwerak/fedora-bootc-hass .
 podman pull quay.io/centos-bootc/bootc-image-builder:latest
 sudo podman run \
       --rm -it --privileged --pull=newer \
       --security-opt label=type:unconfined_t \
       -v /var/lib/containers/storage:/var/lib/containers/storage \
-      -v ./config.toml:/config.toml \
+      -v ./config.json:/config.json \
       -v .:/output \
       quay.io/centos-bootc/bootc-image-builder:latest \
       --type iso \
-      --config /config.toml \
+      --rootfs xfs \
+      --config /config.json \
     quay.io/jwerak/fedora-bootc-hass
 ```
 
